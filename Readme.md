@@ -20,5 +20,4 @@ Place players token in grid
 Evaluate for winner, if no winner, next round
 If no winner and all cells full, tie,
 
-Each cell is now an object.
-Each player is now an object
+Need to impliment win condition.

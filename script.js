@@ -16,17 +16,14 @@ function gameboard(){
             console.log(board[i].map((cell) => cell.getValue()));
         }        
     }
-    const pickCell = (row, col, player) => {
-        let legalTurn = false;
-        if (board[row][col].getValue() !== 0) {
-            console.log(`Cell full try again. Still ${player.name}'s turn`);
-            return legalTurn
-        }
+    const evalCell = (row, col) => {
+        return board[row][col].getValue();
+    }
+    const changeCell = (row, col, player) => {
         board[row][col].changeToken(player);
-        return legalTurn = true;
     }
 
-    return { getBoard, printBoard, pickCell }
+    return { getBoard, printBoard, evalCell, changeCell }
 }
 function Player(name, token){
     this.name = name;
@@ -57,18 +54,65 @@ function gameController(){
         console.log(`${activePlayer.name}'s Turn`)
     }
     const playRound = (row,col) => {
-        turn = board.pickCell(row, col, activePlayer);
-        if (turn) {
+        let pickedCellVal = board.evalCell(row,col);
+        if (pickedCellVal !== 0) {
+            console.log(`Cell Taken. ${activePlayer.name}'s turn still`)
+        }
+        else {
+            board.changeCell(row,col,activePlayer);
+            if (checkWin()) {
+                console.log(`Player ${activePlayer} wins!`);
+                printRound();
+                return
+            }
             switchTurns();
             console.log("===========")
             printRound();
+        }  
+    }
+    const checkGameEnd = () => {
+        const values = board.getBoard().flat()
+                        .map( cell => cell.getValue())
+        if (!values.includes(0)){
+            console.log('Game Over')
         }
-        
     }
-    const checkTie = () => {
-        let values;
-        [...values] = board.getBoard()
-    }
+    const checkWin = () => {
+        // Check rows
+        for (let row = 0; row < 3; row++) {
+          if (board[row][0].getValue() !== 0 &&
+              board[row][0].getValue() === board[row][1].getValue() &&
+              board[row][1].getValue() === board[row][2].getValue()) {
+            return true;
+          }
+        }
+      
+        // Check columns
+        for (let col = 0; col < 3; col++) {
+          if (board[0][col].getValue() !== 0 &&
+              board[0][col].getValue() === board[1][col].getValue() &&
+              board[1][col].getValue() === board[2][col].getValue()) {
+            return true;
+          }
+        }
+      
+        // Check diagonals
+        if (board[0][0].getValue() !== 0 &&
+            board[0][0].getValue() === board[1][1].getValue() &&
+            board[1][1].getValue() === board[2][2].getValue()) {
+          return true;
+        }
+      
+        if (board[0][2].getValue() !== 0 &&
+            board[0][2].getValue() === board[1][1].getValue() &&
+            board[1][1].getValue() === board[2][0].getValue()) {
+          return true;
+        }
+      
+        return false;  // No winner yet
+      }
+      
+    checkGameEnd()
     printRound();
     return { playRound, getActivePlayer }
 
