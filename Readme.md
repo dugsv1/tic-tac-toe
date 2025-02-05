@@ -20,4 +20,5 @@ Place players token in grid
 Evaluate for winner, if no winner, next round
 If no winner and all cells full, tie,
 
-Need to impliment win condition.
+Onclick playround, check win condition
+playRound needs row, col, those are extracted from the e.target's data

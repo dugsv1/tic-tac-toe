@@ -1,0 +1,28 @@
+* {
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100svh;
+    flex-direction: column;
+    
+}
+
+.outer-container {
+    display: flex;
+    min-width: 200px;
+    min-height: 200px;
+    border: 1px solid;
+    flex-direction: column;
+}
+.row {
+    display: flex;
+}
+.cell {
+    min-width: 10svh;
+    min-height: 10svh;
+    border: 1px solid red
+}
